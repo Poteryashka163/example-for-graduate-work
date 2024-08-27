@@ -1,34 +1,43 @@
 package ru.skypro.homework.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 import ru.skypro.homework.dto.Role;
+import javax.persistence.*;
 
-@ToString
-@Setter
-@Getter
+
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name="user")
 public class User {
-    private int Id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer Id;
+
+    @Column(name = "email", unique = true,nullable = false)
     private String email;
+
+    @Column(name = "first_Name")
     private String firstName;
+
+    @Column(name = "last_Name")
     private String lastName;
+
+    @Column(name = "phone")
     private String phone;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private Role role;
-    private String image;
 
-    public User() {
-    }
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "image_id")
+    private ImageUser imageUser;
 
-    public User(int id, String email, String firstName, String lastName, String phone, Role role, String image) {
-        Id = id;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.role = role;
-        this.image = image;
-    }
+    @Column(nullable = false,name = "password")
+    private String password;
+
 }

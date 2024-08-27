@@ -1,27 +1,39 @@
 package ru.skypro.homework.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
+import javax.persistence.*;
+import java.util.List;
 
-@ToString
-@Setter
-@Getter
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name="ad")
 public class Ad {
-    private String imageAds;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name= "ad_pk", nullable = false)
     private int pkAd;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "image_Ad")
+    private ImageAd imageAd;
+
+    @Column(name = "price",nullable = false)
     private int price;
+
+    @Column(name = "title",nullable = false)
     private String title;
 
-    public Ad() {
-    }
+    @Column(name = "description")
+    private String description;
 
-    public Ad(String imageAds, int pkAd, int price, String title) {
-        this.imageAds = imageAds;
-        this.pkAd = pkAd;
-        this.price = price;
-        this.title = title;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Comments> comments;
 }

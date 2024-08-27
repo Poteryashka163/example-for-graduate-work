@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - include:
+      file: liquibase/scripts/creating-AdsDB.sql
+  - include:
+      file: liquibase/scripts/creating-CommentsDB.sql
+  - include:
+      file: liquibase/scripts/creating-ImageUserDB.sql
+  - include:
+      file: liquibase/scripts/creating-ImageAdDB.sql
+  - include:
+      file: liquibase/scripts/creating-UserDB.sql
