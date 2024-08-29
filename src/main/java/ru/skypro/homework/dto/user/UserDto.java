@@ -33,7 +33,7 @@ public class UserDto {
         userDto.setLastNameDto(user.getLastName());
         userDto.setRoleDto(user.getRole());
         Optional.ofNullable(user.getImageUser()).ifPresent(image -> userDto.setImageDto(
-                "/user/" + user.getImageUser().getId() + "/image"));
+                "/users/" + user.getImageUser().getId() + "/image"));
         return userDto;
     }
 }

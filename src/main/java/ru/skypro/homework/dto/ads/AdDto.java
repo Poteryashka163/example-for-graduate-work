@@ -17,7 +17,7 @@ public class AdDto {
     private int price;
     private String title;
 
-    public static AdDto fromAd(Ad ad){
+    public static AdDto fromAd(Ad ad) {
         AdDto adDto = new AdDto();
         adDto.setPkAd(ad.getPkAd());
         adDto.setAuthor(ad.getUser().getId());

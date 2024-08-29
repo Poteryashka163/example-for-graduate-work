@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 
@@ -17,21 +17,21 @@ import java.util.Objects;
 public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_pk", nullable = false)
+    @Column(name = "comment_id", nullable = false)
     private int pkComment;
 
     @Column(name = "text", nullable = false)
     private String text;
 
     @Column(name = "created_at")
-    LocalDate createdAt;
+    LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "author_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "pkAd", nullable = false)
+    @JoinColumn(name = "ad_id", nullable = false)
     private Ad ad;
 
     @Override

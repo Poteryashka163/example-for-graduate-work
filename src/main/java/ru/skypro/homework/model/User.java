@@ -1,9 +1,8 @@
 package ru.skypro.homework.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.skypro.homework.dto.Role;
+
 import javax.persistence.*;
 
 
@@ -11,13 +10,13 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="user")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
 
-    @Column(name = "email", unique = true,nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     @Column(name = "first_Name")
@@ -29,7 +28,7 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated
     @Column(name = "role")
     private Role role;
 
@@ -37,7 +36,7 @@ public class User {
     @JoinColumn(name = "image_id")
     private ImageUser imageUser;
 
-    @Column(nullable = false,name = "password")
+    @Column(nullable = false, name = "password")
     private String password;
 
 }

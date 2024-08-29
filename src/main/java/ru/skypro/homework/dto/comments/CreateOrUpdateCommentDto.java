@@ -3,6 +3,7 @@ package ru.skypro.homework.dto.comments;
 import lombok.Data;
 
 import javax.validation.constraints.Size;
+
 /**
  * Класс-обертка для добавления и/или обновления комментария к объявлению с валидацией размера комментария.
  */

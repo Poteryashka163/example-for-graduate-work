@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import ru.skypro.homework.model.Comments;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -18,7 +19,7 @@ import java.util.Optional;
 public class CommentDto {
     private int author;
     private int pkComment;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     private String authorImage;
     private String authorFirstName;
     private String text;

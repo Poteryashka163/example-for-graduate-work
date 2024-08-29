@@ -14,7 +14,7 @@ public class CreateOrUpdateAdDto {
     @Size(min = 8, max = 64)
     private String descriptionCreateOrUpdateAdDto;
 
-    public Ad toAd(){
+    public Ad toAd() {
         Ad ad = new Ad();
         ad.setTitle(this.getTitleCreateOrUpdateAdDto());
         ad.setPrice(this.getPriceCreateOrUpdateAdDto());

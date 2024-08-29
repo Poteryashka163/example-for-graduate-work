@@ -18,8 +18,7 @@ public class ExtendedAdDto {
     private String image;
 
 
-
-    public static ExtendedAdDto fromAd(Ad ad){
+    public static ExtendedAdDto fromAd(Ad ad) {
         ExtendedAdDto extendedAd = new ExtendedAdDto();
         extendedAd.setPk(ad.getPkAd());
         extendedAd.setAuthorFirstName(ad.getUser().getFirstName());

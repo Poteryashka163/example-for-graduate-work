@@ -15,7 +15,7 @@ public class ImageDto {
 
     private String id;
 
-    private byte [] image;
+    private byte[] image;
 
     /**
      * Метод сопоставления изображения объекта с классом-оболочкой.

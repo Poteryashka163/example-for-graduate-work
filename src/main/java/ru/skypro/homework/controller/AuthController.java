@@ -12,6 +12,11 @@ import ru.skypro.homework.dto.Login;
 import ru.skypro.homework.dto.Register;
 import ru.skypro.homework.service.AuthService;
 
+import javax.validation.Valid;
+
+/**
+ * Класс-контроллер для запуска конечных точек для регистрации и аутентификации пользователей.
+ */
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -20,8 +25,11 @@ public class AuthController {
 
     private final AuthService authService;
 
+    /**
+     * Метод аутентификации пользователя с проверкой входных данных.
+     */
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Login login) {
+    public ResponseEntity<?> login(@RequestBody @Valid Login login) {
         if (authService.login(login.getUsername(), login.getPassword())) {
             return ResponseEntity.ok().build();
         } else {
@@ -29,8 +37,11 @@ public class AuthController {
         }
     }
 
+    /**
+     * Метод регистрации пользователя с проверкой входных данных.
+     */
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Register register) {
+    public ResponseEntity<?> register(@RequestBody @Valid Register register) {
         if (authService.register(register)) {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } else {

@@ -12,7 +12,7 @@ import javax.persistence.Table;
  * Класс-сущность для сохранения изображений с аватара пользователя.
  */
 @Entity
-@Table(name = "image_user")
+@Table(name = "image")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

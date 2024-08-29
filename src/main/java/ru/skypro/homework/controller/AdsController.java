@@ -1,4 +1,96 @@
 package ru.skypro.homework.controller;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.dto.ads.AdDto;
+import ru.skypro.homework.dto.ads.AdsDto;
+import ru.skypro.homework.dto.ads.CreateOrUpdateAdDto;
+import ru.skypro.homework.dto.ads.ExtendedAdDto;
+import ru.skypro.homework.service.AdsService;
+
+
+@Slf4j
+@CrossOrigin(value = "http://localhost:3000")
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/ads")
 public class AdsController {
+
+    private final AdsService adsService;
+
+    /**
+     * Получение всех объявлений
+     */
+    @GetMapping()
+    public AdsDto getAllAds() {
+        return adsService.getAllAds();
+    }
+
+    /**
+     * Добавление объявления
+     */
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<AdDto> addAd(@RequestPart("properties") CreateOrUpdateAdDto properties,
+                                       @RequestPart("image") MultipartFile image,
+                                       Authentication authentication) {
+        return ResponseEntity.ok(adsService.addAd(properties, image, authentication));
+    }
+
+    /**
+     * Получение информации об объявлении
+     */
+    @GetMapping("/{id}")
+    public ExtendedAdDto getAds(@PathVariable int id, Authentication authentication) {
+        return adsService.getAds(id, authentication);
+    }
+
+    /**
+     * Удаление объявления
+     */
+    @DeleteMapping("/{id}")
+    public void removeAd(@PathVariable int id, Authentication authentication) {
+        adsService.removeAd(id, authentication);
+
+    }
+
+    /**
+     * Обновление информации об объявлении
+     */
+    @PatchMapping("/{id}")
+    public AdDto updateAds(@PathVariable int id,
+                           @RequestBody CreateOrUpdateAdDto updateAd,
+                           Authentication authentication) {
+        return adsService.updateAds(id, updateAd, authentication);
+    }
+
+    /**
+     * Получение объявлений авторизованного пользователя
+     */
+    @GetMapping("/me")
+    public AdsDto getAdsMe(Authentication authentication) {
+        return adsService.getAdsMe(authentication);
+    }
+
+    /**
+     * Обновление картинки объявления
+     */
+    @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<byte[]> updateImage(@PathVariable int id,
+                                              @RequestPart("image") MultipartFile image,
+                                              Authentication authentication) {
+        adsService.updateImage(id, image, authentication);
+        return ResponseEntity.ok().build();
+    }
+
+
+    @GetMapping(value = "/{id}/image", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_GIF_VALUE, "image/*"})
+    public byte[] getImage(@PathVariable("id") String id) {
+        return adsService.getImage(id);
+    }
+
 }

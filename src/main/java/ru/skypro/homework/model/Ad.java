@@ -3,6 +3,7 @@ package ru.skypro.homework.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,21 +11,21 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="ad")
+@Table(name = "ads")
 public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "ad_pk", nullable = false)
-    private int pkAd;
+    @Column(name = "ad_id", nullable = false)
+    private Integer pkAd;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "image_Ad")
+    @JoinColumn(name = "image_ad_id")
     private ImageAd imageAd;
 
-    @Column(name = "price",nullable = false)
+    @Column(name = "price", nullable = false)
     private int price;
 
-    @Column(name = "title",nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Column(name = "description")
