@@ -1,5 +1,9 @@
 package ru.skypro.homework.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -34,6 +38,18 @@ public class AdsController {
     /**
      * Добавление объявления
      */
+    @Operation(
+            summary = "Добавить объявление", tags = "Объявления",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201", description = "Created",
+                            content = {@Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = AdDto.class))}),
+                    @ApiResponse(responseCode = "401", description = "Unauthorised", content = @Content),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
+            }
+    )
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AdDto> addAd(@RequestPart("properties") CreateOrUpdateAdDto properties,
                                        @RequestPart("image") MultipartFile image,
@@ -44,6 +60,16 @@ public class AdsController {
     /**
      * Получение информации об объявлении
      */
+    @Operation(
+            summary = "Получить информацию об объявлении", tags = "Объявления",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", description = "OK",
+                            content = {@Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExtendedAdDto.class))}),
+                    @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
+            }
+    )
     @GetMapping("/{id}")
     public ExtendedAdDto getAds(@PathVariable int id, Authentication authentication) {
         return adsService.getAds(id, authentication);
@@ -52,6 +78,15 @@ public class AdsController {
     /**
      * Удаление объявления
      */
+    @Operation(
+            summary = "Удалить объявление", tags = "Объявления",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "OK", content = @Content),
+                    @ApiResponse(responseCode = "204", description = "No Content", content = @Content),
+                    @ApiResponse(responseCode = "401", description = "Unauthorised", content = @Content),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
+            }
+    )
     @DeleteMapping("/{id}")
     public void removeAd(@PathVariable int id, Authentication authentication) {
         adsService.removeAd(id, authentication);
@@ -61,6 +96,18 @@ public class AdsController {
     /**
      * Обновление информации об объявлении
      */
+    @Operation(
+            summary = "Обновить информацию об объявлении", tags = "Объявления",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", description = "OK",
+                            content = {@Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = AdDto.class))}),
+                    @ApiResponse(responseCode = "401", description = "Unauthorised", content = @Content),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
+            }
+    )
     @PatchMapping("/{id}")
     public AdDto updateAds(@PathVariable int id,
                            @RequestBody CreateOrUpdateAdDto updateAd,
@@ -71,6 +118,17 @@ public class AdsController {
     /**
      * Получение объявлений авторизованного пользователя
      */
+    @Operation(
+            summary = "Получить объявления авторизованного пользователя", tags = "Объявления",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", description = "OK",
+                            content = {@Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = AdsDto.class))}),
+                    @ApiResponse(responseCode = "401", description = "Unauthorised", content = @Content),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
+            }
+    )
     @GetMapping("/me")
     public AdsDto getAdsMe(Authentication authentication) {
         return adsService.getAdsMe(authentication);
@@ -79,6 +137,16 @@ public class AdsController {
     /**
      * Обновление картинки объявления
      */
+    @Operation(
+            summary = "Обновить картинку объявления", tags = "Объявления",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", description = "OK",
+                            content = {@Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = AdDto.class))}),
+                    @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
+            }
+    )
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<byte[]> updateImage(@PathVariable int id,
                                               @RequestPart("image") MultipartFile image,

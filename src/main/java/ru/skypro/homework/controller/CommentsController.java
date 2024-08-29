@@ -1,5 +1,9 @@
 package ru.skypro.homework.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -32,7 +36,7 @@ public class CommentsController {
     /**
      * Метод для получения всех комментариев к объявлению.
      */
-
+    @Operation(summary = "Получить комментарии объявления", tags = "Комментарии")
     @GetMapping("/{id}/comments")
     public ResponseEntity<CommentsDto> getComments(@PathVariable("id") Integer adId,
                                                    Authentication authentication) {
@@ -43,6 +47,17 @@ public class CommentsController {
     /**
      * Метод для Добавление комментария к объявлению.
      */
+    @Operation(
+            summary = "Добавление нового комментария к объявлению", tags = "Комментарии",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "OK",
+                            content = {@Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = CommentDto.class))}),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
+            }
+    )
 
     @PostMapping("/{id}/comments")
     public ResponseEntity<CommentDto> addComment(@PathVariable("id") Integer adId,
@@ -55,6 +70,15 @@ public class CommentsController {
     /**
      * Метод для Удаления комментария у объявления.
      */
+    @Operation(
+            summary = "Удалить комментарий", tags = "Комментарии",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "OK", content = @Content),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
+            }
+    )
 
     @DeleteMapping("/{adId}/comments/{commentId}")
     public void deleteComment(@PathVariable("adId") Integer adId,
@@ -67,6 +91,17 @@ public class CommentsController {
     /**
      * Метод для Обновления комментария у объявления.
      */
+    @Operation(
+            summary = "Обновить комментарий", tags = "Комментарии",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "OK",
+                            content = {@Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = CommentDto.class))}),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
+            }
+    )
     @PatchMapping("/{adId}/comments/{commentId}")
     public CommentDto updateComment(@PathVariable("adId") Integer adId,
                                     @PathVariable("commentId") Integer commentId,
