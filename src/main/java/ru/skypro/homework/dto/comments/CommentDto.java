@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skypro.homework.model.Comments;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -18,7 +17,7 @@ import java.util.Optional;
 @NoArgsConstructor
 public class CommentDto {
     private int author;
-    private int pkComment;
+    private int pk;
     private LocalDateTime createdAt;
     private String authorImage;
     private String authorFirstName;
@@ -26,7 +25,7 @@ public class CommentDto {
 
     public static CommentDto fromComment(Comments comments) {
         CommentDto commentDto = new CommentDto();
-        commentDto.setPkComment(comments.getPkComment());
+        commentDto.setPk(comments.getPkComment());
         commentDto.setAuthor(comments.getUser().getId());
         Optional.ofNullable(comments.getUser().getImageUser()).ifPresent(image -> commentDto.setAuthorImage(
                 "/users/" + comments.getUser().getImageUser().getId() + "/image"));
@@ -38,7 +37,7 @@ public class CommentDto {
 
     public Comments toComment() {
         Comments comment = new Comments();
-        comment.setPkComment(this.getPkComment());
+        comment.setPkComment(this.getPk());
         comment.setCreatedAt(this.getCreatedAt());
         comment.setText(this.getText());
 

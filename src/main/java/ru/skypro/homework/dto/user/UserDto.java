@@ -12,13 +12,13 @@ import java.util.Optional;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
-    private int IdDto;
-    private String emailDto;
-    private String firstNameDto;
-    private String lastNameDto;
-    private String phoneDto;
-    private Role roleDto;
-    private String imageDto;
+    private int id;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String phone;
+    private Role role;
+    private String image;
 
 
     /**
@@ -26,13 +26,13 @@ public class UserDto {
      */
     public static UserDto toUser(User user) {
         UserDto userDto = new UserDto();
-        userDto.setIdDto(user.getId());
-        userDto.setEmailDto(user.getEmail());
-        userDto.setPhoneDto(user.getPhone());
-        userDto.setFirstNameDto(user.getFirstName());
-        userDto.setLastNameDto(user.getLastName());
-        userDto.setRoleDto(user.getRole());
-        Optional.ofNullable(user.getImageUser()).ifPresent(image -> userDto.setImageDto(
+        userDto.setId(user.getId());
+        userDto.setEmail(user.getEmail());
+        userDto.setPhone(user.getPhone());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setRole(user.getRole());
+        Optional.ofNullable(user.getImageUser()).ifPresent(image -> userDto.setImage(
                 "/users/" + user.getImageUser().getId() + "/image"));
         return userDto;
     }

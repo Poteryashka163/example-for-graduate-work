@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.user.NewPasswordDto;
 import ru.skypro.homework.dto.user.UpdateUserDto;
 import ru.skypro.homework.dto.user.UserDto;
-import ru.skypro.homework.model.User;
 import ru.skypro.homework.service.UserService;
 
 import javax.validation.Valid;

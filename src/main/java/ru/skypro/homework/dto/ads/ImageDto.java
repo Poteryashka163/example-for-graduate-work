@@ -16,7 +16,6 @@ public class ImageDto {
     private byte[] image;
 
     public static ImageDto fromImageAd(ImageAd image) {
-
         return new ImageDto(image.getId(), image.getImage());
     }
 }

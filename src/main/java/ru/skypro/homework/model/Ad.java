@@ -16,11 +16,11 @@ public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ad_id", nullable = false)
-    private Integer pkAd;
+    private Integer pk;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "image_ad_id")
-    private ImageAd imageAd;
+    private ImageAd image;
 
     @Column(name = "price", nullable = false)
     private int price;

@@ -4,10 +4,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.ads.AdDto;
-import ru.skypro.homework.dto.ads.AdsDto;
-import ru.skypro.homework.dto.ads.CreateOrUpdateAdDto;
-import ru.skypro.homework.dto.ads.ExtendedAdDto;
+import ru.skypro.homework.dto.ads.*;
 import ru.skypro.homework.exception.AccessErrorException;
 import ru.skypro.homework.exception.AdNotFoundException;
 import ru.skypro.homework.exception.UserNotFoundException;
@@ -82,7 +79,7 @@ public class AdsServiceImpl implements AdsService {
             ad = adsRepository.save(ad);
 
             ImageAd image = new ImageAd();
-            image.setId(ad.getPkAd().toString());
+            image.setId(ad.getPk().toString());
 
             try {
                 byte[] imageBytes = file.getBytes();
@@ -91,7 +88,7 @@ public class AdsServiceImpl implements AdsService {
                 throw new RuntimeException();
             }
             ImageAd returnImage = imageAdRepository.save(image);
-            ad.setImageAd(returnImage);
+            ad.setImage(returnImage);
 
             AdDto adDTO = AdDto.fromAd(adsRepository.save(ad));
 
@@ -105,7 +102,7 @@ public class AdsServiceImpl implements AdsService {
     @Override
     public ExtendedAdDto getAds(int id, Authentication authentication) {
         if (authentication.isAuthenticated()) {
-            Ad extendedAd = adsRepository.findAdByPkAd(id).orElseThrow(AdNotFoundException::new);
+            Ad extendedAd = adsRepository.findAdByPk(id).orElseThrow(AdNotFoundException::new);
             return ExtendedAdDto.fromAd(extendedAd);
         } else {
             throw new AccessErrorException();
@@ -114,7 +111,7 @@ public class AdsServiceImpl implements AdsService {
 
     @Override
     public void removeAd(int id, Authentication authentication) {
-        Ad deletedAd = adsRepository.findAdByPkAd(id).orElseThrow(AdNotFoundException::new);
+        Ad deletedAd = adsRepository.findAdByPk(id).orElseThrow(AdNotFoundException::new);
         if (isAdminOrOwnerAd(authentication, deletedAd.getUser().getEmail())) {
             adsRepository.delete(deletedAd);
         } else {
@@ -124,11 +121,11 @@ public class AdsServiceImpl implements AdsService {
 
     @Override
     public AdDto updateAds(int id, CreateOrUpdateAdDto updateAd, Authentication authentication) {
-        Ad updatedAd = adsRepository.findAdByPkAd(id).orElseThrow(AdNotFoundException::new);
+        Ad updatedAd = adsRepository.findAdByPk(id).orElseThrow(AdNotFoundException::new);
         if (isAdminOrOwnerAd(authentication, updatedAd.getUser().getEmail())) {
-            updatedAd.setTitle(updateAd.getTitleCreateOrUpdateAdDto());
-            updatedAd.setPrice(updateAd.getPriceCreateOrUpdateAdDto());
-            updatedAd.setDescription(updateAd.getDescriptionCreateOrUpdateAdDto());
+            updatedAd.setTitle(updateAd.getTitle());
+            updatedAd.setPrice(updateAd.getPrice());
+            updatedAd.setDescription(updateAd.getDescription());
             adsRepository.save(updatedAd);
         } else {
             throw new AccessErrorException();
@@ -148,17 +145,17 @@ public class AdsServiceImpl implements AdsService {
     }
 
     @Override
-    public ImageAd updateImage(int id, MultipartFile file, Authentication authentication) {
+    public ImageDto updateImage(int id, MultipartFile file, Authentication authentication) {
 
-        Ad ad = adsRepository.findAdByPkAd(id).orElseThrow(AdNotFoundException::new);
+        Ad ad = adsRepository.findAdByPk(id).orElseThrow(AdNotFoundException::new);
 
         if (isAdminOrOwnerAd(authentication, ad.getUser().getEmail())) {
             ImageAd image;
-            if (!Objects.isNull(ad.getImageAd())) {
-                image = imageAdRepository.findById(ad.getImageAd().getId()).orElse(new ImageAd());
+            if (!Objects.isNull(ad.getImage())) {
+                image = imageAdRepository.findById(ad.getImage().getId()).orElse(new ImageAd());
             } else {
                 image = new ImageAd();
-                image.setId(ad.getPkAd().toString());
+                image.setId(ad.getPk().toString());
             }
             try {
                 byte[] imageBytes = file.getBytes();
@@ -167,10 +164,10 @@ public class AdsServiceImpl implements AdsService {
                 throw new RuntimeException();
             }
             ImageAd returnImage = imageAdRepository.save(image);
-            ad.setImageAd(image);
+            ad.setImage(image);
             adsRepository.save((ad));
 
-            return returnImage;
+            return ImageDto.fromImageAd(returnImage);
 
         } else {
             throw new AccessErrorException();

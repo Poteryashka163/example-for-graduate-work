@@ -12,19 +12,19 @@ import java.util.Optional;
 @NoArgsConstructor
 public class AdDto {
     private int author;
-    private int pkAd;
-    private String imageAd;
+    private int pk;
+    private String image;
     private int price;
     private String title;
 
     public static AdDto fromAd(Ad ad) {
         AdDto adDto = new AdDto();
-        adDto.setPkAd(ad.getPkAd());
+        adDto.setPk(ad.getPk());
         adDto.setAuthor(ad.getUser().getId());
         adDto.setTitle(ad.getTitle());
         adDto.setPrice(ad.getPrice());
-        Optional.ofNullable(ad.getImageAd()).ifPresent(image -> adDto.setImageAd(
-                "/ads/" + ad.getImageAd().getId() + "/image"));
+        Optional.ofNullable(ad.getImage()).ifPresent(image -> adDto.setImage(
+                "/ads/" + ad.getImage().getId() + "/image"));
         return adDto;
     }
 }

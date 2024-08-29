@@ -22,5 +22,5 @@ public interface AdsRepository extends JpaRepository<Ad, Integer> {
             "WHERE user_id = :meId", nativeQuery = true)
     List<Ad> getAdsMe(Integer meId);
 
-    Optional<Ad> findAdByPkAd(int pkAd);
+    Optional<Ad> findAdByPk(int pk);
 }

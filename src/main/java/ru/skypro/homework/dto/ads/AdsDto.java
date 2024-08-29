@@ -8,12 +8,12 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class AdsDto {
-    private int countAds;
+    private int count;
     private List<AdDto> results;
 
     public AdsDto(List<AdDto> results) {
         this.results = results;
-        this.countAds = results.size();
+        this.count = results.size();
     }
 
 }

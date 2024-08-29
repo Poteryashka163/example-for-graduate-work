@@ -20,7 +20,7 @@ public class ExtendedAdDto {
 
     public static ExtendedAdDto fromAd(Ad ad) {
         ExtendedAdDto extendedAd = new ExtendedAdDto();
-        extendedAd.setPk(ad.getPkAd());
+        extendedAd.setPk(ad.getPk());
         extendedAd.setAuthorFirstName(ad.getUser().getFirstName());
         extendedAd.setAuthorLastName(ad.getUser().getLastName());
         extendedAd.setDescription(ad.getDescription());
@@ -28,8 +28,8 @@ public class ExtendedAdDto {
         extendedAd.setPhone(ad.getUser().getPhone());
         extendedAd.setTitle(ad.getTitle());
         extendedAd.setPrice(ad.getPrice());
-        Optional.ofNullable(ad.getImageAd()).ifPresent(image -> extendedAd.setImage(
-                "/ads/" + ad.getImageAd().getId() + "/image"));
+        Optional.ofNullable(ad.getImage()).ifPresent(image -> extendedAd.setImage(
+                "/ads/" + ad.getImage().getId() + "/image"));
         return extendedAd;
     }
 

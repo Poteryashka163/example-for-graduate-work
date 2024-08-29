@@ -62,9 +62,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UpdateUserDto updateInformationAboutUser(UpdateUserDto updateUserDto, String username) {
         User user = userRepository.findByEmail(username).orElseThrow(UserNotFoundException::new);
-        user.setFirstName(updateUserDto.getFirstNameUpdate());
-        user.setLastName(updateUserDto.getLastNameUpdate());
-        user.setPhone(updateUserDto.getPhoneUpdate());
+        user.setFirstName(updateUserDto.getFirstName());
+        user.setLastName(updateUserDto.getLastName());
+        user.setPhone(updateUserDto.getPhone());
         userRepository.save(user);
         return UpdateUserDto.toUpdateUser(user);
     }

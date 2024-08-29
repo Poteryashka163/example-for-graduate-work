@@ -83,14 +83,14 @@ public class CommentServiceImpl implements CommentService {
         if (authentication.isAuthenticated()) {
             String username = authentication.getName();
 
-            Ad getAd = adsRepository.findAdByPkAd(id).orElseThrow(AdNotFoundException::new);
+            Ad getAd = adsRepository.findAdByPk(id).orElseThrow(AdNotFoundException::new);
             User meUser = userRepository.findByEmail(username)
                     .orElseThrow(UserNotFoundException::new);
             Comments newComments = new Comments();
 
             newComments.setUser(meUser);
             newComments.setAd(getAd);
-            newComments.setText(createOrUpdateCommentDto.getTextCreateOrUpdateCommentDto());
+            newComments.setText(createOrUpdateCommentDto.getText());
             newComments.setCreatedAt(LocalDateTime.now());
 
             CommentDto commentDTO = CommentDto.fromComment(commentRepository.save(newComments));
@@ -108,7 +108,7 @@ public class CommentServiceImpl implements CommentService {
     public void deleteComment(Integer adId, Integer commentId, Authentication authentication) {
         if (authentication.isAuthenticated()) {
             Comments findComment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
-            if (!adId.equals(findComment.getAd().getPkAd())) {
+            if (!adId.equals(findComment.getAd().getPk())) {
                 throw new CommentNotFoundException();
             } else {
                 if (isAdminOrOwnerComment(authentication, findComment.getUser().getEmail())) {
@@ -129,12 +129,12 @@ public class CommentServiceImpl implements CommentService {
     public CommentDto updateComment(Integer adId, Integer commentId, CreateOrUpdateCommentDto createOrUpdateCommentDto, Authentication authentication) {
         if (authentication.isAuthenticated()) {
             Comments findComment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
-            if (!adId.equals(findComment.getAd().getPkAd())) {
+            if (!adId.equals(findComment.getAd().getPk())) {
                 throw new CommentNotFoundException();
             } else {
 
                 if (isAdminOrOwnerComment(authentication, findComment.getUser().getEmail())) {
-                    findComment.setText(createOrUpdateCommentDto.getTextCreateOrUpdateCommentDto());
+                    findComment.setText(createOrUpdateCommentDto.getText());
                     findComment.setCreatedAt(LocalDateTime.now());
 
                     CommentDto commentDto = CommentDto.fromComment(commentRepository.save(findComment));
