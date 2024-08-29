@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void updatePassword(NewPasswordDto newPasswordDto, String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findByEmail(username).orElseThrow(UserNotFoundException::new);
         if (passwordEncoder.matches(newPasswordDto.getCurrentPassword(), user.getPassword())) {
             user.setPassword(passwordEncoder.encode(newPasswordDto.getNewPassword()));
             userRepository.save(user);
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserDto getInformation(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findByEmail(username).orElseThrow(UserNotFoundException::new);
         return UserDto.toUser(user);
     }
 
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UpdateUserDto updateInformationAboutUser(UpdateUserDto updateUserDto, String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findByEmail(username).orElseThrow(UserNotFoundException::new);
         user.setFirstName(updateUserDto.getFirstNameUpdate());
         user.setLastName(updateUserDto.getLastNameUpdate());
         user.setPhone(updateUserDto.getPhoneUpdate());
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public ImageDto updateImage(MultipartFile file, String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findByEmail(username).orElseThrow(UserNotFoundException::new);
         ImageUser image;
         if (!Objects.isNull(user.getImageUser())) {
             image = imageUserRepository.findById(user.getImageUser().getId()).orElse(new ImageUser());

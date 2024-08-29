@@ -54,7 +54,7 @@ public class AdsServiceImpl implements AdsService {
     }
 
     private User userMe(Authentication authentication) {
-        return usersRepository.findByUsername(authentication.getName()).orElseThrow(UserNotFoundException::new);
+        return usersRepository.findByEmail(authentication.getName()).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class AdsServiceImpl implements AdsService {
     public AdDto addAd(CreateOrUpdateAdDto properties, MultipartFile file, Authentication authentication) {
 
         String username = authentication.getName();
-        User user = usersRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        User user = usersRepository.findByEmail(username).orElseThrow(UserNotFoundException::new);
 
         if (authentication.isAuthenticated()) {
 
@@ -105,7 +105,7 @@ public class AdsServiceImpl implements AdsService {
     @Override
     public ExtendedAdDto getAds(int id, Authentication authentication) {
         if (authentication.isAuthenticated()) {
-            Ad extendedAd = adsRepository.findAdByPk(id).orElseThrow(AdNotFoundException::new);
+            Ad extendedAd = adsRepository.findAdByPkAd(id).orElseThrow(AdNotFoundException::new);
             return ExtendedAdDto.fromAd(extendedAd);
         } else {
             throw new AccessErrorException();
@@ -114,7 +114,7 @@ public class AdsServiceImpl implements AdsService {
 
     @Override
     public void removeAd(int id, Authentication authentication) {
-        Ad deletedAd = adsRepository.findAdByPk(id).orElseThrow(AdNotFoundException::new);
+        Ad deletedAd = adsRepository.findAdByPkAd(id).orElseThrow(AdNotFoundException::new);
         if (isAdminOrOwnerAd(authentication, deletedAd.getUser().getEmail())) {
             adsRepository.delete(deletedAd);
         } else {
@@ -124,7 +124,7 @@ public class AdsServiceImpl implements AdsService {
 
     @Override
     public AdDto updateAds(int id, CreateOrUpdateAdDto updateAd, Authentication authentication) {
-        Ad updatedAd = adsRepository.findAdByPk(id).orElseThrow(AdNotFoundException::new);
+        Ad updatedAd = adsRepository.findAdByPkAd(id).orElseThrow(AdNotFoundException::new);
         if (isAdminOrOwnerAd(authentication, updatedAd.getUser().getEmail())) {
             updatedAd.setTitle(updateAd.getTitleCreateOrUpdateAdDto());
             updatedAd.setPrice(updateAd.getPriceCreateOrUpdateAdDto());
@@ -150,7 +150,7 @@ public class AdsServiceImpl implements AdsService {
     @Override
     public ImageAd updateImage(int id, MultipartFile file, Authentication authentication) {
 
-        Ad ad = adsRepository.findAdByPk(id).orElseThrow(AdNotFoundException::new);
+        Ad ad = adsRepository.findAdByPkAd(id).orElseThrow(AdNotFoundException::new);
 
         if (isAdminOrOwnerAd(authentication, ad.getUser().getEmail())) {
             ImageAd image;

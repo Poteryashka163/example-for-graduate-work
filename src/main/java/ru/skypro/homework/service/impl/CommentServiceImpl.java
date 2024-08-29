@@ -83,8 +83,8 @@ public class CommentServiceImpl implements CommentService {
         if (authentication.isAuthenticated()) {
             String username = authentication.getName();
 
-            Ad getAd = adsRepository.findAdByPk(id).orElseThrow(AdNotFoundException::new);
-            User meUser = userRepository.findByUsername(username)
+            Ad getAd = adsRepository.findAdByPkAd(id).orElseThrow(AdNotFoundException::new);
+            User meUser = userRepository.findByEmail(username)
                     .orElseThrow(UserNotFoundException::new);
             Comments newComments = new Comments();
 

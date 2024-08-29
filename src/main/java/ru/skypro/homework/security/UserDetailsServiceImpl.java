@@ -28,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new AdsUserDetails(userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new));
+        return new AdsUserDetails(userRepository.findByEmail(username).orElseThrow(UserNotFoundException::new));
     }
 
     /**
@@ -36,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     public boolean userExists(String username) {
         User userNotExists = new User();
-        User users = userRepository.findByUsername(username).orElse(userNotExists);
+        User users = userRepository.findByEmail(username).orElse(userNotExists);
         return !userNotExists.equals(users);
     }
 
