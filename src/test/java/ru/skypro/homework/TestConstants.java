@@ -1,13 +1,14 @@
 package ru.skypro.homework;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.repository.AdsRepository;
 import ru.skypro.homework.repository.CommentRepository;
 import ru.skypro.homework.repository.UserRepository;
 
 import java.time.LocalDateTime;
-
+@Component
 public class TestConstants {
 
     @Autowired

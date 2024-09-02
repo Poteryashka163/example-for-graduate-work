@@ -69,7 +69,7 @@ public class CommentServiceImpl implements CommentService {
                     .collect(Collectors.toList());
             return new CommentsDto(commentDtoList.size(), commentDtoList);
         } else {
-            throw new AccessErrorException();
+            throw new AccessErrorException("you can't update get a list of all ads.");
         }
 
     }
@@ -93,11 +93,9 @@ public class CommentServiceImpl implements CommentService {
             newComments.setText(createOrUpdateCommentDto.getText());
             newComments.setCreatedAt(LocalDateTime.now());
 
-            CommentDto commentDTO = CommentDto.fromComment(commentRepository.save(newComments));
-
-            return commentDTO;
+            return CommentDto.fromComment(commentRepository.save(newComments));
         } else {
-            throw new AccessErrorException();
+            throw new AccessErrorException("You can't add a comment.");
         }
     }
 
@@ -107,18 +105,18 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteComment(Integer adId, Integer commentId, Authentication authentication) {
         if (authentication.isAuthenticated()) {
-            Comments findComment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
+            Comments findComment = commentRepository.findById(commentId).orElseThrow();
             if (!adId.equals(findComment.getAd().getPk())) {
-                throw new CommentNotFoundException();
+                throw new CommentNotFoundException("Comment not found.");
             } else {
                 if (isAdminOrOwnerComment(authentication, findComment.getUser().getEmail())) {
                     commentRepository.delete(findComment);
                 } else {
-                    throw new AccessErrorException();
+                    throw new AccessErrorException("You can't delete this comment.");
                 }
             }
         } else {
-            throw new AccessErrorException();
+            throw new AccessErrorException("You can't delete a comment.");
         }
     }
 
@@ -128,9 +126,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto updateComment(Integer adId, Integer commentId, CreateOrUpdateCommentDto createOrUpdateCommentDto, Authentication authentication) {
         if (authentication.isAuthenticated()) {
-            Comments findComment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
+            Comments findComment = commentRepository.findById(commentId).orElseThrow();
             if (!adId.equals(findComment.getAd().getPk())) {
-                throw new CommentNotFoundException();
+                throw new CommentNotFoundException("You can't update this comment.");
             } else {
 
                 if (isAdminOrOwnerComment(authentication, findComment.getUser().getEmail())) {
@@ -140,12 +138,12 @@ public class CommentServiceImpl implements CommentService {
                     CommentDto commentDto = CommentDto.fromComment(commentRepository.save(findComment));
                     return commentDto;
                 } else {
-                    throw new AccessErrorException();
+                    throw new AccessErrorException("You can't update this comment.");
                 }
 
             }
         } else {
-            throw new AccessErrorException();
+            throw new AccessErrorException("You can't update a comment.");
         }
     }
 }

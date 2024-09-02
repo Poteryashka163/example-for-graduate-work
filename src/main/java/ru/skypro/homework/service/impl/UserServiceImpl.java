@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
             user.setPassword(passwordEncoder.encode(newPasswordDto.getNewPassword()));
             userRepository.save(user);
         } else {
-            throw new WrongCurrentPasswordException();
+            throw new WrongCurrentPasswordException("Your new password is incorrect.");
         }
     }
 

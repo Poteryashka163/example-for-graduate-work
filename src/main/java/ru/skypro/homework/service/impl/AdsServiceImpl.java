@@ -90,12 +90,10 @@ public class AdsServiceImpl implements AdsService {
             ImageAd returnImage = imageAdRepository.save(image);
             ad.setImage(returnImage);
 
-            AdDto adDTO = AdDto.fromAd(adsRepository.save(ad));
-
-            return adDTO;
+            return AdDto.fromAd(adsRepository.save(ad));
 
         } else {
-            throw new AccessErrorException();
+            throw new AccessErrorException("You can't add an ad.");
         }
     }
 
@@ -105,7 +103,7 @@ public class AdsServiceImpl implements AdsService {
             Ad extendedAd = adsRepository.findAdByPk(id).orElseThrow(AdNotFoundException::new);
             return ExtendedAdDto.fromAd(extendedAd);
         } else {
-            throw new AccessErrorException();
+            throw new AccessErrorException("");
         }
     }
 
@@ -115,7 +113,7 @@ public class AdsServiceImpl implements AdsService {
         if (isAdminOrOwnerAd(authentication, deletedAd.getUser().getEmail())) {
             adsRepository.delete(deletedAd);
         } else {
-            throw new AccessErrorException();
+            throw new AccessErrorException("You can't delete ads.");
         }
     }
 
@@ -128,7 +126,7 @@ public class AdsServiceImpl implements AdsService {
             updatedAd.setDescription(updateAd.getDescription());
             adsRepository.save(updatedAd);
         } else {
-            throw new AccessErrorException();
+            throw new AccessErrorException("You can't update ads.");
         }
 
         return AdDto.fromAd(updatedAd);
@@ -170,7 +168,7 @@ public class AdsServiceImpl implements AdsService {
             return ImageDto.fromImageAd(returnImage);
 
         } else {
-            throw new AccessErrorException();
+            throw new AccessErrorException("You can't update the image.");
         }
     }
 
